@@ -10,21 +10,10 @@ permissions:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Configure Git Credentials
-        run: |
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: 3.x
-
-      - name: Set up Rye
-        uses: eifinger/setup-rye@v4
-
-      - name: Deploy docs
-        run: rye sync && rye run mkdocs gh-deploy --force
+    uses: dyvenia/workflow-templates/.github/workflows/template_static_site_prepare_mkdocs.yml@main
+    with:
+      project_manager: rye
+      static_site_branch: gh-pages
+      mkdocs_config: mkdocs.yml
+      site_dir: site
+    secrets: inherit # pragma: allowlist secret
